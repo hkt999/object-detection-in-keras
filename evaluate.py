@@ -86,7 +86,7 @@ for classname in label_maps:
                     np.expand_dims(gt["bbox"], axis=0),
                 )[0]
 
-        t = np.where(gt_pred_matrix > 0.5, 1, 0)
+        t = np.where(gt_pred_matrix > args.iou_threshold, 1, 0)
         for gt_i in range(t.shape[0]):
             row = t[gt_i]
             true_positives_per_gt = np.argwhere(row == 1)
@@ -110,7 +110,6 @@ for classname in label_maps:
 
     for i in range(detections.shape[0]):
         detections_for_threshold = detections[:i+1]
-        detections_for_threshold = detections_for_threshold[detections_for_threshold[:, 0] > args.iou_threshold]
         if (detections_for_threshold.shape[0] > 0):
             tp = sum(detections_for_threshold[:, 1])
             precision = tp / len(detections_for_threshold)
@@ -143,8 +142,8 @@ for classname in label_maps:
     print(f"-- {classname}: {'%.2f' % (ap * 100)}%")
 
     plt.figure(figsize=(7, 7))
-    plt.xlim(-0.1, 1)
-    plt.ylim(-0.1, 1)
+    plt.xlim(-0.1, 1.1)
+    plt.ylim(-0.1, 1.1)
     plt.plot(recalls, precisions, label="Precision")
     plt.scatter(intp_recalls, intp_precisions, label="11-Point Interpolated Precision", color="red")
     plt.title(f"Precision-Recall Curve\nClass: {classname.lower()}, AP: {'%.2f' % (ap * 100)}%")
@@ -167,7 +166,7 @@ plt.title(f"Precision-Recall Curve\n{len(label_maps)} classes, mAP: {'%.2f' % (m
 plt.legend()
 plt.xlabel("Recall")
 plt.ylabel("Precision")
-plt.xlim(-0.1, 1)
-plt.ylim(-0.1, 1)
+plt.xlim(-0.1, 1.1)
+plt.ylim(-0.1, 1.1)
 plt.grid()
 plt.savefig(os.path.join(args.output_dir, f"_all_map-{'%.2f' % mAP}.png"))
