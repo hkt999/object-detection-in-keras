@@ -1,14 +1,14 @@
 import os
 from losses import SSD_LOSS
 from utils import data_utils
-from networks import SSD_MOBILENET
+from networks import SSD_MOBILENET_KEVIN
 from tensorflow.keras.optimizers import SGD
 from data_generators import SSD_DATA_GENERATOR
 from tensorflow.keras.callbacks import ModelCheckpoint
 from tensorflow.keras.applications.mobilenet import preprocess_input
 
 
-def ssd_mobilenetv1(config, args):
+def ssd_mobilenetv1_kevin(config, args):
     training_config = config["training"]
     with open(args.label_maps, "r") as label_map_file:
         label_maps = [i.strip("\n") for i in label_map_file.readlines()]
@@ -54,7 +54,7 @@ def ssd_mobilenetv1(config, args):
         negative_boxes_ratio=training_config["negative_boxes_ratio"]
     )
 
-    model = SSD_MOBILENET(
+    model = SSD_MOBILENET_KEVIN(
         config=config,
         label_maps=label_maps,
         is_training=True

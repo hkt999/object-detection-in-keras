@@ -2,18 +2,18 @@ import numpy as np
 from tensorflow.keras.models import Model
 from tensorflow.keras.regularizers import l2
 from tensorflow.keras.layers import Conv2D, BatchNormalization, ReLU, Reshape, Concatenate, Activation, Input, ZeroPadding2D
-from tensorflow.keras.applications import MobileNetV2
+from tensorflow.keras.applications import MobileNetV3Small
 from custom_layers import DefaultBoxes, DecodeSSDPredictions
 from utils.ssd_utils import get_number_default_boxes
 
 
-def SSD_MOBILENETV2(
+def SSD_MOBILENETV3(
     config,
     label_maps,
     num_predictions=10,
     is_training=True,
 ):
-    """ Construct an SSD network that uses MobileNetV2 backbone.
+    """ Construct an SSD network that uses MobileNetV3 backbone.
 
     Args:
         - config: python dict as read from the config file
@@ -22,10 +22,10 @@ def SSD_MOBILENETV2(
         - is_training: whether the model is constructed for training purpose or inference purpose
 
     Returns:
-        - A keras version of SSD300 with MobileNetV2 as backbone network.
+        - A keras version of SSD300 with MobileNetV3 as backbone network.
 
     Code References:
-        - https://github.com/chuanqi305/MobileNet-SSD
+        - https://github.com/keras-team/keras-applications/blob/master/keras_applications/mobilenet_v3.py
     """
     model_config = config["model"]
     input_shape = (model_config["input_size"], model_config["input_size"], 3)
@@ -39,13 +39,15 @@ def SSD_MOBILENETV2(
     input_tensor = Input(shape=input_shape)
     input_tensor = ZeroPadding2D(padding=(2, 2))(input_tensor)
     #
-    base_network = MobileNetV2(
+    base_network = MobileNetV3Small(
         input_tensor=input_tensor,
         alpha=config["model"]["width_multiplier"],
         classes=num_classes,
         weights='imagenet',
         include_top=False
     )
+    base_network.summary()
+    quit()
     base_network = Model(inputs=base_network.input, outputs=base_network.get_layer(
         'block_16_project_BN').output)
     base_network.get_layer("input_1")._name = "input"

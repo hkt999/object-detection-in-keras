@@ -39,8 +39,7 @@ elif model_config["name"] == "ssd_mobilenetv2":
 elif model_config["name"] == "tbpp_vgg16":
     model, process_input_fn, label_maps = inference_utils.tbpp_vgg16(config, args)
 else:
-    print(
-        f"model with name ${model_config['name']} has not been implemented yet")
+    print(f"error: model with name ${model_config['name']} has not been implemented yet")
     exit()
 
 model.load_weights(args.weights)

@@ -76,8 +76,15 @@ class DefaultBoxes(Layer):
             clip_boxes=self.clip_boxes,
         )
         default_boxes = np.expand_dims(default_boxes, axis=0)
+        #print("1 --default boxes--")
+        #print(default_boxes)
         default_boxes = tf.constant(default_boxes, dtype='float32')
+        #print("2 --default boxes--")
+        #print(default_boxes)
         default_boxes = tf.tile(default_boxes, (tf.shape(inputs)[0], 1, 1, 1, 1))
+        #print("3 --default boxes--")
+        #print(default_boxes)
+        #quit()
         return default_boxes
 
     def get_config(self):

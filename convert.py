@@ -62,7 +62,7 @@ elif model_config["name"] == "ssd_mobilenetv2":
         num_predictions=args.num_predictions)
 else:
     print(
-        f"model with name ${model_config['name']} has not been implemented yet")
+            f"sample: model with name ${model_config['name']} has not been implemented yet")
     exit()
 
 model.load_weights(args.weights)

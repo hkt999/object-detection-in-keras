@@ -14,6 +14,7 @@ def one_hot_class_label(classname, label_maps):
     Raises:
         - Classname does not includes in label maps
     """
+    #print("--- classname:", classname)
     assert classname in label_maps, "classname must be included in label maps"
     temp = np.zeros((len(label_maps)), dtype=np.int)
     temp[label_maps.index(classname)] = 1

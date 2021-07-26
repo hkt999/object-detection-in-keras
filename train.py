@@ -1,9 +1,6 @@
 from utils import training_utils, command_line_utils
 from tensorflow.keras.callbacks import ModelCheckpoint, CSVLogger, TerminateOnNaN, LearningRateScheduler
-import argparse
-import json
-import os
-
+import argparse,json,os
 
 parser = argparse.ArgumentParser(
     description='Start the training process of a particular network.')
@@ -63,8 +60,12 @@ if model_config["name"] == "ssd_mobilenetv1":
     training_utils.ssd_mobilenetv1(config, args)
 elif model_config["name"] == "ssd_mobilenetv2":
     training_utils.ssd_mobilenetv2(config, args)
+elif model_config["name"] == "ssd_mobilenetv3":
+    training_utils.ssd_mobilenetv3(config, args)
+elif model_config["name"] == "ssd_mobilenetv1_kevin":
+    training_utils.ssd_mobilenetv1_kevin(config, args)
 elif model_config["name"] == "ssd_vgg16":
-    # configure callbacks here
+    """
     callbacks = [
         ModelCheckpoint(
             filepath=os.path.join(
@@ -92,7 +93,7 @@ elif model_config["name"] == "ssd_vgg16":
             else:
                 return 0.00001
         callbacks.append(LearningRateScheduler(schedule=lr_schedule, verbose=1))
-
+    """
     training_utils.ssd_vgg16(config, args, callbacks)
 elif model_config["name"] == "tbpp_vgg16":
     training_utils.tbpp_vgg16(config, args)

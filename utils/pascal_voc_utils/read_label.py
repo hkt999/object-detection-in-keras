@@ -3,6 +3,7 @@ import xml.etree.ElementTree as ET
 
 
 def read_label(label_path):
+    label_path = label_path + ".xml"
     assert os.path.exists(label_path), "Label file does not exist."
 
     xml_root = ET.parse(label_path).getroot()

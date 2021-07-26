@@ -23,6 +23,9 @@ def read_sample(image_path, label_path):
     """
     image_path = image_path.strip("\n")
     label_path = label_path.strip("\n")
+    #print("image_path:", image_path)
+    #print("label_path:", label_path)
+    image_path = image_path + ".jpg"
     assert os.path.exists(image_path), "Image file does not exist."
     bboxes, classes = pascal_voc_utils.read_label(label_path)
     image = cv2.imread(image_path)  # read image in bgr format

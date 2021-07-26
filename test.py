@@ -38,9 +38,10 @@ if not os.path.exists(args.output_dir):
 input_size = config["model"]["input_size"]
 model_config = config["model"]
 
-if model_config["name"] == "ssd_mobilenetv2":
-    model, label_maps, process_input_fn = inference_utils.inference_ssd_mobilenetv2(
-        config, args)
+if model_config["name"] == "ssd_mobilenetv1":
+    model, process_input_fn, label_maps = inference_utils.ssd_mobilenetv1(config, args)
+elif model_config["name"] == "ssd_mobilenetv2":
+    model, process_input_fn, label_maps = inference_utils.ssd_mobilenetv2(config, args)
 elif model_config["name"] == "ssd_vgg16":
     model, process_input_fn, label_maps = inference_utils.ssd_vgg16(config, args)
 else:
@@ -54,8 +55,14 @@ with open(args.test_file, "r") as test_set_file:
     tests = test_set_file.readlines()
     for idx, sample in enumerate(tests):
         print(f"{idx+1}/{len(tests)}")
-        image_file, label_file = sample.split(" ")
-        filename = image_file[:image_file.index(".")]
+        image_file, label_file = sample.split("\n")
+        filename = image_file
+        image_file = image_file + ".jpg"
+        label_file = label_file + ".xml"
+        #print("filename:", filename)
+        #print("image_file:", image_file)
+        readname = os.path.join(args.images_dir, image_file)
+        #print("readname:", readname)
         image = cv2.imread(os.path.join(args.images_dir, image_file))
         image = np.array(image, dtype=np.float)
         image = np.uint8(image)
